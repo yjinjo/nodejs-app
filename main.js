@@ -24,22 +24,7 @@ const app = http.createServer(function (request, response) {
 
   if (pathname === '/') {
     if (queryData.id === undefined) {
-      // fs.readdir('./data', function (err, filelist) {
-      //   const title = 'Welcome';
-      //   const description = 'Hello, Node.js';
-      //   const list = template.list(filelist);
-      //   const html = template.HTML(
-      //     title,
-      //     list,
-      //     `<h2>${title}</h2>${description}`,
-      //     `<a href="/create">create</a>`
-      //   );
-      //   response.writeHead(200);
-      //   response.end(html);
-      // });
-
       db.query(`SELECT * FROM topic`, function (error, topics) {
-        console.log(topics);
         const title = 'Welcome';
         const description = 'Hello, Node.js';
         const list = template.list(topics);
@@ -54,31 +39,38 @@ const app = http.createServer(function (request, response) {
         response.end(html);
       });
     } else {
-      fs.readdir('./data', function (err, filelist) {
-        const filteredId = path.parse(queryData.id).base;
-        fs.readFile(`data/${filteredId}`, 'utf8', function (err, description) {
-          const title = queryData.id;
-          const sanitizedTitle = sanitizeHtml(title);
-          const sanitizedDescription = sanitizeHtml(description, {
-            allowedTags: ['h1'],
-          });
-          const list = template.list(filelist);
-          const html = template.HTML(
-            title,
-            list,
-            `<h2>${sanitizedTitle}</h2>${sanitizedDescription}`,
-            `<a href="/create">create</a> 
-               <a href="/update?id=${sanitizedTitle}">update</a>
+      db.query(`SELECT * FROM topic`, function (error, topics) {
+        // 만약 에러가 발생했다면,
+        if (error) {
+          throw error;
+        }
+        db.query(
+          `SELECT * FROM topic WHERE id=?`,
+          [queryData.id],
+          function (error2, topic) {
+            console.log(topic);
+            if (error2) {
+              throw error2;
+            }
+            const title = topic[0].title;
+            const description = topic[0].description;
+            const list = template.list(topics);
+            const html = template.HTML(
+              title,
+              list,
+              `<h2>${title}</h2>${description}`,
+              `<a href="/create">create</a>
+               <a href="/update?id=${queryData.id}">update</a>
                <form action="delete_process" method="POST">
-                <input type="hidden" name="id" value="${sanitizedTitle}">
-                <input type="submit" value="delete">
+                 <input type="hidden" name="id" value="${queryData.id}">
+                 <input type="submit" value="delete">
                </form>
               `
-          );
-
-          response.writeHead(200);
-          response.end(html);
-        });
+            );
+            response.writeHead(200);
+            response.end(html);
+          }
+        );
       });
     }
   } else if (pathname === '/create') {
