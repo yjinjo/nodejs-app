@@ -6,6 +6,16 @@ const qs = require('querystring');
 const template = require('./lib/template');
 const path = require('path');
 const sanitizeHtml = require('sanitize-html');
+const mysql = require('mysql');
+require('dotenv').config();
+
+const db = mysql.createConnection({
+  host: process.env.DATABASE_HOSTNAME,
+  user: process.env.DATABASE_USERNAME,
+  password: process.env.DATABASE_PASSWORD,
+  database: process.env.DATABASE_NAME,
+});
+db.connect(); // 실제 접속
 
 const app = http.createServer(function (request, response) {
   const _url = request.url;
@@ -14,11 +24,25 @@ const app = http.createServer(function (request, response) {
 
   if (pathname === '/') {
     if (queryData.id === undefined) {
-      fs.readdir('./data', function (err, filelist) {
+      // fs.readdir('./data', function (err, filelist) {
+      //   const title = 'Welcome';
+      //   const description = 'Hello, Node.js';
+      //   const list = template.list(filelist);
+      //   const html = template.HTML(
+      //     title,
+      //     list,
+      //     `<h2>${title}</h2>${description}`,
+      //     `<a href="/create">create</a>`
+      //   );
+      //   response.writeHead(200);
+      //   response.end(html);
+      // });
+
+      db.query(`SELECT * FROM topic`, function (error, topics) {
+        console.log(topics);
         const title = 'Welcome';
         const description = 'Hello, Node.js';
-
-        const list = template.list(filelist);
+        const list = template.list(topics);
         const html = template.HTML(
           title,
           list,
