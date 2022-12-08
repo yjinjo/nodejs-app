@@ -4,6 +4,7 @@ const url = require('url');
 const qs = require('querystring');
 const template = require('./lib/template');
 const db = require('./lib/db');
+const topic = require('./lib/topic');
 
 const app = http.createServer(function (request, response) {
   const _url = request.url;
@@ -12,21 +13,7 @@ const app = http.createServer(function (request, response) {
 
   if (pathname === '/') {
     if (queryData.id === undefined) {
-      db.query(`SELECT * FROM topic`, function (error, topics) {
-        const title = 'Welcome';
-        const description = 'Hello, Node.js';
-        const list = template.list(topics);
-        const html = template.HTML(
-          title,
-          list,
-          `<h2>${title}</h2>${description}`,
-          `<a href="/create">create</a>`
-        );
-
-        response.writeHead(200);
-        response.end(html);
-        console.log(topics);
-      });
+      topic.home(request, response);
     } else {
       db.query(`SELECT * FROM topic`, function (error, topics) {
         // 만약 에러가 발생했다면,
@@ -40,7 +27,6 @@ const app = http.createServer(function (request, response) {
             if (error2) {
               throw error2;
             }
-            console.log(topic);
             const title = topic[0].title;
             const description = topic[0].description;
             const list = template.list(topics);
@@ -162,8 +148,6 @@ const app = http.createServer(function (request, response) {
     });
     request.on('end', function () {
       let post = qs.parse(body);
-      console.log(post);
-
       db.query(
         `UPDATE topic SET title=?, description=?, author_id=? WHERE id=?`,
         [post.title, post.description, post.author, post.id],
