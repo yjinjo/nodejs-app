@@ -5,6 +5,7 @@ const qs = require('querystring');
 const template = require('./lib/template');
 const db = require('./lib/db');
 const topic = require('./lib/topic');
+const author = require('./lib/author');
 
 const app = http.createServer(function (request, response) {
   const _url = request.url;
@@ -27,6 +28,8 @@ const app = http.createServer(function (request, response) {
     topic.update_process(request, response);
   } else if (pathname === '/delete_process') {
     topic.delete_process(request, response);
+  } else if (pathname === '/author') {
+    author.home(request, response);
   } else {
     response.writeHead(404);
     response.end('Not Found');
