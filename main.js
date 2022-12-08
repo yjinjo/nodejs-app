@@ -175,12 +175,17 @@ const app = http.createServer(function (request, response) {
     });
     request.on('end', function () {
       let post = qs.parse(body);
-      let id = post.id;
-      const filteredId = path.parse(id).base;
-      fs.unlink(`data/${filteredId}`, function (err) {
-        response.writeHead(302, { Location: `/` });
-        response.end();
-      });
+      db.query(
+        `DELETE FROM topic WHERE id = ?`,
+        [post.id],
+        function (error, result) {
+          if (error) {
+            throw error;
+          }
+          response.writeHead(302, { Location: `/` });
+          response.end();
+        }
+      );
     });
   } else {
     response.writeHead(404);
