@@ -3,36 +3,7 @@ const fs = require('fs');
 const url = require('url');
 const qs = require('querystring');
 
-const template = {
-  HTML: function (title, list, body, control) {
-    return `
-      <!DOCTYPE html>
-      <html>
-        <head>
-          <title>WEB1 - ${title}</title>
-          <meta charset="utf-8" />
-        </head>
-        <body>
-          <h1><a href="/">WEB</a></h1>
-          ${list}
-          ${control}
-          ${body}
-        </body>
-      </html>  
-    `;
-  },
-  list: function (filelist) {
-    let list = '<ul>';
-    let i = 0;
-    while (i < filelist.length) {
-      list += `<li><a href="/?id=${filelist[i]}">${filelist[i]}</a></li>`;
-      i += 1;
-    }
-    list += '</ul>';
-
-    return list;
-  },
-};
+const template = require('./lib/template');
 
 const app = http.createServer(function (request, response) {
   const _url = request.url;
