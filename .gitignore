@@ -54,5 +54,6 @@ Temporary Items
 .ionide
 
 .code
+/node_modules
 
 # End of https://www.toptal.com/developers/gitignore/api/macos,visualstudiocode
