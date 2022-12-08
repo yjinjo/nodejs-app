@@ -2,20 +2,8 @@ const http = require('http');
 const fs = require('fs');
 const url = require('url');
 const qs = require('querystring');
-
 const template = require('./lib/template');
-const path = require('path');
-const sanitizeHtml = require('sanitize-html');
-const mysql = require('mysql');
-require('dotenv').config();
-
-const db = mysql.createConnection({
-  host: process.env.DATABASE_HOSTNAME,
-  user: process.env.DATABASE_USERNAME,
-  password: process.env.DATABASE_PASSWORD,
-  database: process.env.DATABASE_NAME,
-});
-db.connect(); // 실제 접속
+const db = require('./lib/db');
 
 const app = http.createServer(function (request, response) {
   const _url = request.url;
