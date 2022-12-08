@@ -1,9 +1,5 @@
 const http = require('http');
-const fs = require('fs');
 const url = require('url');
-const qs = require('querystring');
-const template = require('./lib/template');
-const db = require('./lib/db');
 const topic = require('./lib/topic');
 const author = require('./lib/author');
 
