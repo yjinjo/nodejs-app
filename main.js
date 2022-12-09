@@ -6,8 +6,11 @@ const path = require('path');
 const sanitizeHtml = require('sanitize-html');
 const qs = require('querystring');
 const bodyParser = require('body-parser');
+const compression = require('compression');
 
 app.use(bodyParser.urlencoded({ extended: false }));
+// compress all responses
+app.use(compression());
 
 app.get('/', (req, res) => {
   fs.readdir('./data', function (error, filelist) {
