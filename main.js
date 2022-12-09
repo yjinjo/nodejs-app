@@ -8,6 +8,7 @@ const qs = require('querystring');
 const bodyParser = require('body-parser');
 const compression = require('compression');
 
+app.use(express.static('public'));
 app.use(bodyParser.urlencoded({ extended: false }));
 // compress all responses
 app.use(compression());
@@ -25,7 +26,8 @@ app.get('/', (req, res) => {
   const html = template.HTML(
     title,
     list,
-    `<h2>${title}</h2>${description}`,
+    `<h2>${title}</h2>${description}
+    <img src="/images/hello.jpg" style="width: 300px; display: block; margin-top: 10px;">`,
     `<a href="/create">create</a>`
   );
   res.send(html);
