@@ -4,9 +4,12 @@ const fs = require('fs');
 
 const bodyParser = require('body-parser');
 const compression = require('compression');
+const helmet = require('helmet');
+
 const indexRouter = require('./routes/index');
 const topicRouter = require('./routes/topic');
 
+app.use(helmet());
 app.use(express.static('public'));
 app.use(bodyParser.urlencoded({ extended: false }));
 // compress all responses
