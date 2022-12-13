@@ -1,10 +1,7 @@
 const express = require('express');
 const template = require('../lib/template');
 const router = express.Router();
-const authStatusUI = require('../controllers/login').authStatusUI;
-const authIsOwner = require('../controllers/login').authIsOwner;
-const authSessionOwner = require('../controllers/login').authSessionOwner;
-const authSeesionUI = require('../controllers/login').authSeesionUI;
+const auth = require('../controllers/login');
 
 router.get('/', (req, res) => {
   const title = 'Welcome';
@@ -16,7 +13,7 @@ router.get('/', (req, res) => {
     `<h2>${title}</h2>${description}
     <img src="/images/hello.jpg" style="width: 300px; display: block; margin-top: 10px;">`,
     `<a href="/topic/create">create</a>`,
-    authSeesionUI(req, res)
+    auth.sessionUI(req, res)
   );
   res.send(html);
 });
@@ -34,7 +31,7 @@ router.get('/login', (req, res) => {
         <p><input type="submit"></p>
       </form>`,
     `<a href="/topic/create">create</a>`,
-    authStatusUI(req, res)
+    auth.sessionUI(req, res)
   );
 
   res.send(html);

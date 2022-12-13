@@ -4,11 +4,10 @@ const fs = require('fs');
 const sanitizeHtml = require('sanitize-html');
 const template = require('../lib/template');
 const router = express.Router();
-const authStatusUI = require('../controllers/login').authStatusUI;
-const authIsOwner = require('../controllers/login').authIsOwner;
+const auth = require('../controllers/login');
 
 router.get('/create', (req, res) => {
-  if (authIsOwner(req, res) === false) {
+  if (auth.sessionOwner(req, res) === false) {
     res.end('Login required!!!');
     return false;
   }
@@ -30,13 +29,13 @@ router.get('/create', (req, res) => {
       </form>
     `,
     '',
-    authStatusUI(req, res)
+    auth.sessionUI(req, res)
   );
   res.send(html);
 });
 
 router.post('/create_process', (req, res) => {
-  if (authIsOwner(req, res) === false) {
+  if (auth.sessionOwner(req, res) === false) {
     res.end('Login required!!!');
     return false;
   }
@@ -50,7 +49,7 @@ router.post('/create_process', (req, res) => {
 });
 
 router.get('/update/:pageId', (req, res) => {
-  if (authIsOwner(req, res) === false) {
+  if (auth.sessionOwner(req, res) === false) {
     res.end('Login required!!!');
     return false;
   }
@@ -75,14 +74,14 @@ router.get('/update/:pageId', (req, res) => {
         </form>
         `,
       `<a href="/topic/create">create</a> <a href="/topic/update/${title}">update</a>`,
-      authStatusUI(req, res)
+      auth.sessionUI(req, res)
     );
     res.send(html);
   });
 });
 
 router.post('/update_process', (req, res) => {
-  if (authIsOwner(req, res) === false) {
+  if (auth.sessionOwner(req, res) === false) {
     res.end('Login required!!!');
     return false;
   }
@@ -99,7 +98,7 @@ router.post('/update_process', (req, res) => {
 });
 
 router.post('/delete_process', (req, res) => {
-  if (authIsOwner(req, res) === false) {
+  if (auth.sessionOwner(req, res) === false) {
     res.end('Login required!!!');
     return false;
   }
@@ -135,7 +134,7 @@ router.get('/:pageId', (req, res, next) => {
            <input type="submit" value="delete">
          </form>
         `,
-        authStatusUI(req, res)
+        auth.sessionUI(req, res)
       );
       res.send(html);
     }
