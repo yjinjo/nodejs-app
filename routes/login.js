@@ -11,7 +11,7 @@ router.get('/', (req, res) => {
     title,
     list,
     `
-      <form action="/login_process" method="post">
+      <form action="/login/login_process" method="post">
         <p><input type="text" name="email" placeholder="email"></p>
         <p><input type="password" name="password" placeholder="password"></p>
         <p><input type="submit"></p>
@@ -19,6 +19,24 @@ router.get('/', (req, res) => {
     `<a href="/create">create</a>`
   );
   res.send(html);
+});
+
+router.post('/login_process', (req, res) => {
+  const post = req.body;
+
+  if (post.email === 'egoing777@gmail.com' && post.password === '111111') {
+    res.writeHead(302, {
+      'Set-Cookie': [
+        `email=${post.email}`,
+        `password=${post.password}`,
+        `nickname=egoing`,
+      ],
+      Location: '/',
+    });
+    res.end();
+  } else {
+    res.end('Who?');
+  }
 });
 
 module.exports = router;
