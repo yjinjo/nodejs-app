@@ -5,12 +5,23 @@ const fs = require('fs');
 const bodyParser = require('body-parser');
 const compression = require('compression');
 const helmet = require('helmet');
+const session = require('express-session');
+const FileStore = require('session-file-store')(session);
+require('dotenv').config();
 
 app.use(helmet());
 app.use(express.static('public'));
 app.use(bodyParser.urlencoded({ extended: false }));
-// compress all responses
 app.use(compression());
+app.use(
+  session({
+    secret: process.env.SESSION_PASSWORD,
+    resave: false,
+    saveUninitialized: true,
+    store: new FileStore(),
+  })
+);
+
 app.get('*', (req, res, next) => {
   fs.readdir('./data', function (error, filelist) {
     req.list = filelist;

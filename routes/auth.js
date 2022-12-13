@@ -39,13 +39,12 @@ router.post('/login_process', (req, res) => {
   const password = post.pwd;
 
   if (email === authData.email && password === authData.password) {
-    // success
-    res.send('Welcome!');
+    req.session.is_logined = true;
+    req.session.nickname = authData.nickname;
+    res.redirect('/');
   } else {
     res.send('Who?');
   }
-
-  // res.redirect(`/topic/${title}`);
 });
 
 //   const post = req.body;
