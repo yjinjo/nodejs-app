@@ -4,6 +4,7 @@ const fs = require('fs');
 const sanitizeHtml = require('sanitize-html');
 const template = require('../lib/template');
 const router = express.Router();
+const authStatusUI = require('../controllers/login');
 
 router.get('/create', (req, res) => {
   const title = 'WEB - create';
@@ -22,7 +23,8 @@ router.get('/create', (req, res) => {
         </p>
       </form>
     `,
-    ''
+    '',
+    authStatusUI(req, res)
   );
   res.send(html);
 });
@@ -56,7 +58,8 @@ router.get('/update/:pageId', (req, res) => {
           </p>
         </form>
         `,
-      `<a href="/topic/create">create</a> <a href="/topic/update/${title}">update</a>`
+      `<a href="/topic/create">create</a> <a href="/topic/update/${title}">update</a>`,
+      authStatusUI(req, res)
     );
     res.send(html);
   });
