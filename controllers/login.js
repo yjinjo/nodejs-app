@@ -1,5 +1,21 @@
 const cookie = require('cookie');
 
+const authSeesionUI = function (req, res) {
+  let authStatusUI = '<a href="/auth/login">login</a>';
+  if (authSessionOwner(req, res)) {
+    authStatusUI = `${req.session.nickname} | <a href="/auth/logout">logout</a>`;
+  }
+  return authStatusUI;
+};
+
+const authSessionOwner = function (req, res) {
+  if (req.session.is_logined) {
+    return true;
+  } else {
+    return false;
+  }
+};
+
 const authIsOwner = function (req, res) {
   let isOwner = false;
   let cookies = {};
@@ -24,6 +40,8 @@ const authStatusUI = function (req, res) {
 };
 
 module.exports = {
+  authSeesionUI,
+  authSessionOwner,
   authIsOwner,
   authStatusUI,
 };
