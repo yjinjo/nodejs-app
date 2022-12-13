@@ -24,8 +24,6 @@ app.get('*', (req, res, next) => {
 
 app.use('/', indexRouter);
 
-app.use('/login', loginRouter);
-
 app.use('/topic', topicRouter);
 
 app.use((req, res, next) => {
