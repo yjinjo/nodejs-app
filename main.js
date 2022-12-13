@@ -15,6 +15,8 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(compression());
 app.use(
   session({
+    HttpOnly: true,
+    secure: true,
     secret: process.env.SESSION_PASSWORD,
     resave: false,
     saveUninitialized: true,

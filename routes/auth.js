@@ -46,4 +46,10 @@ router.post('/login_process', (req, res) => {
   }
 });
 
+router.get('/logout', (req, res) => {
+  req.session.destroy((err) => {
+    res.redirect('/');
+  });
+});
+
 module.exports = router;
