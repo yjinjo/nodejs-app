@@ -1,5 +1,6 @@
 const express = require('express');
 const session = require('express-session');
+const FileStore = require('session-file-store')(session);
 
 const app = express();
 
@@ -8,6 +9,7 @@ app.use(
     secret: 'asdfasd@#41235',
     resave: false,
     saveUninitialized: true,
+    store: new FileStore(),
   })
 );
 

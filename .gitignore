@@ -57,5 +57,6 @@ Temporary Items
 *node_modules
 *bin
 .env
+sessions/
 
 # End of https://www.toptal.com/developers/gitignore/api/macos,visualstudiocode
