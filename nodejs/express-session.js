@@ -1,22 +1,24 @@
 const express = require('express');
 const session = require('express-session');
-require('dotenv').config();
 
 const app = express();
 
-const SESSION_SECRET = process.env.SESSION_SECRET;
-console.log(SESSION_SECRET);
-
 app.use(
   session({
-    secret: process.env.SESSION_SECRET,
+    secret: 'asdfasd@#41235',
     resave: false,
     saveUninitialized: true,
   })
 );
 
 app.get('/', function (req, res, next) {
-  res.send('Hello session');
+  console.log(req.session);
+  if (req.session.num === undefined) {
+    req.session.num = 1;
+  } else {
+    req.session.num += 1;
+  }
+  res.send(`Views: ${req.session.num}`);
 });
 
 app.listen(3000, () => {
