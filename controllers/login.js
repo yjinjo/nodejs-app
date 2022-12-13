@@ -1,6 +1,6 @@
 const cookie = require('cookie');
 
-function authIsOwner(req, res) {
+const authIsOwner = function (req, res) {
   let isOwner = false;
   let cookies = {};
   if (req.headers.cookie) {
@@ -13,14 +13,17 @@ function authIsOwner(req, res) {
     isOwner = true;
   }
   return isOwner;
-}
+};
 
-function authStatusUI(req, res) {
+const authStatusUI = function (req, res) {
   let authStatusUI = '<a href="/login">login</a>';
   if (authIsOwner(req, res)) {
     authStatusUI = '<a href="/logout_process">logout</a>';
   }
   return authStatusUI;
-}
+};
 
-module.exports = authStatusUI;
+module.exports = {
+  authIsOwner,
+  authStatusUI,
+};

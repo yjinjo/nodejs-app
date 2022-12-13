@@ -1,7 +1,8 @@
 const express = require('express');
 const template = require('../lib/template');
 const router = express.Router();
-const authStatusUI = require('../controllers/login');
+const authStatusUI = require('../controllers/login').authStatusUI;
+const authIsOwner = require('../controllers/login').authIsOwner;
 
 router.get('/', (req, res) => {
   const title = 'Welcome';

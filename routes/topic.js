@@ -4,9 +4,15 @@ const fs = require('fs');
 const sanitizeHtml = require('sanitize-html');
 const template = require('../lib/template');
 const router = express.Router();
-const authStatusUI = require('../controllers/login');
+const authStatusUI = require('../controllers/login').authStatusUI;
+const authIsOwner = require('../controllers/login').authIsOwner;
 
 router.get('/create', (req, res) => {
+  if (authIsOwner(req, res) === false) {
+    res.end('Login required!!!');
+    return false;
+  }
+
   const title = 'WEB - create';
   const list = template.list(req.list);
   const html = template.HTML(
@@ -30,6 +36,11 @@ router.get('/create', (req, res) => {
 });
 
 router.post('/create_process', (req, res) => {
+  if (authIsOwner(req, res) === false) {
+    res.end('Login required!!!');
+    return false;
+  }
+
   const post = req.body;
   const title = post.title;
   const description = post.description;
@@ -39,6 +50,11 @@ router.post('/create_process', (req, res) => {
 });
 
 router.get('/update/:pageId', (req, res) => {
+  if (authIsOwner(req, res) === false) {
+    res.end('Login required!!!');
+    return false;
+  }
+
   const filteredId = path.parse(req.params.pageId).base;
   fs.readFile(`data/${filteredId}`, 'utf8', function (err, description) {
     const title = req.params.pageId;
@@ -66,6 +82,11 @@ router.get('/update/:pageId', (req, res) => {
 });
 
 router.post('/update_process', (req, res) => {
+  if (authIsOwner(req, res) === false) {
+    res.end('Login required!!!');
+    return false;
+  }
+
   const post = req.body;
   const id = post.id;
   const title = post.title;
@@ -78,6 +99,11 @@ router.post('/update_process', (req, res) => {
 });
 
 router.post('/delete_process', (req, res) => {
+  if (authIsOwner(req, res) === false) {
+    res.end('Login required!!!');
+    return false;
+  }
+
   const post = req.body;
   const id = post.id;
   const filteredId = path.parse(id).base;
@@ -108,7 +134,8 @@ router.get('/:pageId', (req, res, next) => {
            <input type="hidden" name="id" value="${sanitizedTitle}">
            <input type="submit" value="delete">
          </form>
-        `
+        `,
+        authStatusUI(req, res)
       );
       res.send(html);
     }
