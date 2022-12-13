@@ -24,6 +24,12 @@ app.use(
   })
 );
 
+const authData = {
+  email: process.env.AUTH_EMAIL,
+  password: process.env.AUTH_PASSWORD,
+  nickname: process.env.AUTH_NICKNAME,
+};
+
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 
@@ -35,25 +41,24 @@ passport.use(
     },
     function (username, password, done) {
       console.log('LocalStrategy', username, password);
-      // User.findOne(
-      //   {
-      //     username: username,
-      //   },
-      //   function (err, user) {
-      //     if (err) {
-      //       return done(err);
-      //     }
-      //     if (!user) {
-      //       return done(null, false, {
-      //         message: 'Incorrect username.',
-      //       });
-      //     }
-      //     if (!user.validPassword(password)) {
-      //       return done(null, false, { message: 'Invalid password.' });
-      //     }
-      //     return done(null, user);
-      //   }
-      // );
+      if (username === authData.email) {
+        console.log(1);
+        if (password === authData.password) {
+          console.log(2);
+          // return done(null, user);
+          return done(null, authData);
+        } else {
+          console.log(3);
+          return done(null, false, {
+            message: 'Incorrect password.',
+          });
+        }
+      } else {
+        console.log(4);
+        return done(null, false, {
+          message: 'Incorrect username.',
+        });
+      }
     }
   )
 );

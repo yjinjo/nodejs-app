@@ -4,12 +4,6 @@ require('dotenv').config();
 
 const router = express.Router();
 
-const authData = {
-  email: process.env.AUTH_EMAIL,
-  password: process.env.AUTH_PASSWORD,
-  nickname: process.env.AUTH_NICKNAME,
-};
-
 router.get('/login', (req, res) => {
   const title = 'WEB - login';
   const list = template.list(req.list);
