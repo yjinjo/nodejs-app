@@ -1,8 +1,23 @@
 const express = require('express');
 const template = require('../lib/template');
-const fs = require('fs');
+const cookie = require('cookie');
 
 const router = express.Router();
+
+function authIsOwner(req, res) {
+  let isOwner = false;
+  let cookies = {};
+  if (req.headers.cookie) {
+    cookies = cookie.parse(req.headers.cookie);
+  }
+  if (
+    cookies.email === 'egoing777@gmail.com' &&
+    cookies.password === '111111'
+  ) {
+    isOwner = true;
+  }
+  return isOwner;
+}
 
 router.get('/', (req, res) => {
   const title = 'Login';
@@ -18,6 +33,8 @@ router.get('/', (req, res) => {
       </form>`,
     `<a href="/create">create</a>`
   );
+  const isOwner = authIsOwner(req, res);
+  console.log(isOwner);
   res.send(html);
 });
 
