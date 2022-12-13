@@ -5,6 +5,14 @@ const sanitizeHtml = require('sanitize-html');
 const template = require('../lib/template');
 const router = express.Router();
 
+require('dotenv').config();
+
+const authData = {
+  email: process.env.AUTH_EMAIL,
+  password: process.env.AUTH_PASSWORD,
+  nickname: process.env.AUTH_NICKNAME,
+};
+
 router.get('/login', (req, res) => {
   const title = 'WEB - login';
   const list = template.list(req.list);
@@ -25,11 +33,20 @@ router.get('/login', (req, res) => {
   res.send(html);
 });
 
-// router.post('/create_process', (req, res) => {
-//   if (authIsOwner(req, res) === false) {
-//     res.end('Login required!!!');
-//     return false;
-//   }
+router.post('/login_process', (req, res) => {
+  const post = req.body;
+  const email = post.email;
+  const password = post.pwd;
+
+  if (email === authData.email && password === authData.password) {
+    // success
+    res.send('Welcome!');
+  } else {
+    res.send('Who?');
+  }
+
+  // res.redirect(`/topic/${title}`);
+});
 
 //   const post = req.body;
 //   const title = post.title;
@@ -66,12 +83,6 @@ router.get('/login', (req, res) => {
 //   );
 //   res.send(html);
 // });
-
-// router.post('/create_process', (req, res) => {
-//   if (authIsOwner(req, res) === false) {
-//     res.end('Login required!!!');
-//     return false;
-//   }
 
 //   const post = req.body;
 //   const title = post.title;
