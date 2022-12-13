@@ -36,11 +36,15 @@ const LocalStrategy = require('passport-local').Strategy;
 app.use(passport.initialize());
 app.use(passport.session());
 
-passport.serializeUser(function (err, user) {
+passport.serializeUser(function (user, done) {
+  console.log('serializerUser', user);
+  done(null, user.email);
   // done(null, user.id);
 });
 
-passport.deserializeUser(function (err, user) {
+passport.deserializeUser(function (id, done) {
+  console.log('deserializeUser', id);
+  done(null, authData);
   // user.findById(id, function (err, user) {
   //   done(err, user);
   // });
