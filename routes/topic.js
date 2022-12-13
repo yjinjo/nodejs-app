@@ -7,8 +7,8 @@ const router = express.Router();
 const login = require('../controllers/login');
 
 router.get('/create', (req, res) => {
-  if (login.sessionOwner(req, res) === false) {
-    res.end('Login required!!!');
+  if (!login.sessionOwner(req, res)) {
+    res.redirect('/');
     return false;
   }
 
@@ -35,8 +35,8 @@ router.get('/create', (req, res) => {
 });
 
 router.post('/create_process', (req, res) => {
-  if (login.sessionOwner(req, res) === false) {
-    res.end('Login required!!!');
+  if (!login.sessionOwner(req, res)) {
+    res.redirect('/');
     return false;
   }
 
@@ -49,8 +49,8 @@ router.post('/create_process', (req, res) => {
 });
 
 router.get('/update/:pageId', (req, res) => {
-  if (login.sessionOwner(req, res) === false) {
-    res.end('Login required!!!');
+  if (!login.sessionOwner(req, res)) {
+    res.redirect('/');
     return false;
   }
 
@@ -81,8 +81,8 @@ router.get('/update/:pageId', (req, res) => {
 });
 
 router.post('/update_process', (req, res) => {
-  if (login.sessionOwner(req, res) === false) {
-    res.end('Login required!!!');
+  if (!login.sessionOwner(req, res)) {
+    res.redirect('/');
     return false;
   }
 
@@ -98,8 +98,8 @@ router.post('/update_process', (req, res) => {
 });
 
 router.post('/delete_process', (req, res) => {
-  if (login.sessionOwner(req, res) === false) {
-    res.end('Login required!!!');
+  if (!login.sessionOwner(req, res)) {
+    res.redirect('/');
     return false;
   }
 
