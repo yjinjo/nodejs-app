@@ -55,4 +55,16 @@ router.post('/login_process', (req, res) => {
   }
 });
 
+router.get('/logout_process', (req, res) => {
+  res.writeHead(302, {
+    'Set-Cookie': [
+      `email=; Max-Age=0`,
+      `password=; Max-Age=0`,
+      `nickname=; Max-Age=0`,
+    ],
+    Location: '/',
+  });
+  res.end();
+});
+
 module.exports = router;
