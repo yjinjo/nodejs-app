@@ -8,7 +8,6 @@ const helmet = require('helmet');
 
 const indexRouter = require('./routes/index');
 const topicRouter = require('./routes/topic');
-const loginRouter = require('./routes/login');
 
 app.use(helmet());
 app.use(express.static('public'));
