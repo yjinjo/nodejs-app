@@ -12,7 +12,8 @@ router.get('/', (req, res) => {
     list,
     `<h2>${title}</h2>${description}
     <img src="/images/hello.jpg" style="width: 300px; display: block; margin-top: 10px;">`,
-    `<a href="/topic/create">create</a>`
+    `<a href="/topic/create">create</a>`,
+    authStatusUI(req, res)
   );
   res.send(html);
 });
