@@ -37,17 +37,13 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 passport.serializeUser(function (user, done) {
-  console.log('serializerUser', user);
+  console.log('serializeUser', user);
   done(null, user.email);
-  // done(null, user.id);
 });
 
 passport.deserializeUser(function (id, done) {
   console.log('deserializeUser', id);
   done(null, authData);
-  // user.findById(id, function (err, user) {
-  //   done(err, user);
-  // });
 });
 
 passport.use(
