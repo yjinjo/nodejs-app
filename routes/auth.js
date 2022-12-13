@@ -38,7 +38,9 @@ router.post('/login_process', (req, res) => {
   if (email === authData.email && password === authData.password) {
     req.session.is_logined = true;
     req.session.nickname = authData.nickname;
-    res.redirect('/');
+    req.session.save(() => {
+      res.redirect('/');
+    });
   } else {
     res.send('Who?');
   }
