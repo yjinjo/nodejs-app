@@ -4,10 +4,10 @@ const fs = require('fs');
 const sanitizeHtml = require('sanitize-html');
 const template = require('../lib/template');
 const router = express.Router();
-const auth = require('../controllers/login');
+const login = require('../controllers/login');
 
 router.get('/create', (req, res) => {
-  if (auth.sessionOwner(req, res) === false) {
+  if (login.sessionOwner(req, res) === false) {
     res.end('Login required!!!');
     return false;
   }
@@ -29,13 +29,13 @@ router.get('/create', (req, res) => {
       </form>
     `,
     '',
-    auth.sessionUI(req, res)
+    login.sessionUI(req, res)
   );
   res.send(html);
 });
 
 router.post('/create_process', (req, res) => {
-  if (auth.sessionOwner(req, res) === false) {
+  if (login.sessionOwner(req, res) === false) {
     res.end('Login required!!!');
     return false;
   }
@@ -49,7 +49,7 @@ router.post('/create_process', (req, res) => {
 });
 
 router.get('/update/:pageId', (req, res) => {
-  if (auth.sessionOwner(req, res) === false) {
+  if (login.sessionOwner(req, res) === false) {
     res.end('Login required!!!');
     return false;
   }
@@ -74,14 +74,14 @@ router.get('/update/:pageId', (req, res) => {
         </form>
         `,
       `<a href="/topic/create">create</a> <a href="/topic/update/${title}">update</a>`,
-      auth.sessionUI(req, res)
+      login.sessionUI(req, res)
     );
     res.send(html);
   });
 });
 
 router.post('/update_process', (req, res) => {
-  if (auth.sessionOwner(req, res) === false) {
+  if (login.sessionOwner(req, res) === false) {
     res.end('Login required!!!');
     return false;
   }
@@ -98,7 +98,7 @@ router.post('/update_process', (req, res) => {
 });
 
 router.post('/delete_process', (req, res) => {
-  if (auth.sessionOwner(req, res) === false) {
+  if (login.sessionOwner(req, res) === false) {
     res.end('Login required!!!');
     return false;
   }
@@ -134,7 +134,7 @@ router.get('/:pageId', (req, res, next) => {
            <input type="submit" value="delete">
          </form>
         `,
-        auth.sessionUI(req, res)
+        login.sessionUI(req, res)
       );
       res.send(html);
     }
